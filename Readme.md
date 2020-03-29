@@ -12,8 +12,11 @@ A small pipeline to determinate if reads match with covid19 genome.
 ## Run
 
 ```
-snakemake -s pipeline/main.snakefile -j 8 queries/{file1}_k31_e0.8.tsv queries/{file2}_k31_e0.8.tsv …
+snakemake -s pipeline/main.snakefile --configfile config/basic.json -j 8 queries/{file1}_k31_e0.8.tsv queries/{file2}_k31_e0.8.tsv …
 ```
 
 You can change the kmer size `k{kmer size}`. The kmer fraction before to say if match with a reference genome or not `e{kmer fraction}`. 
-.
+
+## Configuration
+
+You can change the maximal number of threads used by each task by edit `config/basic.json`
