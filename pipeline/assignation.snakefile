@@ -21,7 +21,7 @@ rule query:
 rule build_graph:
     input:
         human = "references/human.fasta",
-        covid = "references/covid.fasta",
+        sras = "references/sras.fasta",
 
     output:
         graph = "graphs/graph_k{kmer}.gfa",
@@ -30,4 +30,4 @@ rule build_graph:
     threads: threads_max
         
     shell:
-        "Bifrost build -t {threads} -c -k {wildcards.kmer} -r {input.human} -r {input.covid} -o graphs/graph_k{wildcards.kmer}"
+        "Bifrost build -t {threads} -c -k {wildcards.kmer} -r {input.human} -r {input.sras} -o graphs/graph_k{wildcards.kmer}"

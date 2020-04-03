@@ -5,7 +5,7 @@ A small pipeline to determinate if reads match with covid19 genome.
 ## Setup
 
 1. Install [Bifrost](https://github.com/pmelsted/bifrost) in your path
-2. Create file `references/covid.fasta` with your covid references see [CDCgov SARS-CoV2_Sequencing repe](https://github.com/CDCgov/SARS-CoV-2_Sequencing#bioinformatics)
+2. Create file `references/sras.fasta` with your covid references see [CDCgov SARS-CoV2_Sequencing repe](https://github.com/CDCgov/SARS-CoV-2_Sequencing#bioinformatics)
 3. Create file `references/human.fasta` with your favorite human references.
 4. Move or create link to your reads file in `reads` directory
 
