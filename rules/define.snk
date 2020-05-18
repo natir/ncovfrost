@@ -1,0 +1,6 @@
+
+threads_max = config["threads_max"]
+
+reverse_seq = config["reverse_seq"]
+
+deconvolution_mismatch = config["deconvolation_mismatch"]

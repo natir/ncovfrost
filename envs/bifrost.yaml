@@ -1,0 +1,9 @@
+name: Bifrost
+
+channels:
+  - bioconda
+  - defaults
+
+dependencies:
+  - bifrost = 1.0
+

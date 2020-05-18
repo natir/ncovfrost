@@ -1,3 +1,13 @@
 {
-    "threads_max": 32
+    "threads_max": 32,
+
+    "reverse_seq": "GGTTAATTCTGATGAGCGTACC",
+
+    "deconvolation_mismatch": 4,
+
+    "kmer_size": 21,
+
+    "match_threshold": 0.6,
+
+    "run_mapping": false
 }

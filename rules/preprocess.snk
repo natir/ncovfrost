@@ -1,0 +1,53 @@
+include: "define.snk"
+
+rule revcomp:
+    input:
+        reads = "data/reads/raw/{reads}.fastq"
+
+    output:
+        reads = "data/reads/revcomp/{reads}.fastq"
+
+    conda:
+        "../envs/preprocess.yaml"
+
+    shell:
+        "seqtk seq -r {input.reads} > {output.reads}"
+
+
+rule trimming:
+    input:
+        reads = "data/reads/revcomp/{reads}.fastq"
+
+    output:
+        reads = "data/reads/trim/{reads}.fastq"
+
+    conda:
+        "../envs/preprocess.yaml"
+
+    threads: threads_max
+        
+    shell:
+        "cutadapt -j {threads} -m 10 -g {reverse_seq} {input.reads} > {output.reads}"
+
+
+rule deconvolution:
+    input:
+        reads = "data/reads/trim/{reads}.fastq",
+        barcode  = "data/barcodes/{reads}.csv"
+
+    output:
+        log = "data/reads/deconvolution/{reads}/sabre.log"
+
+    params:
+        barcode = "../../../barcodes/{reads}.csv",
+        reads =  "../../trim/{reads}.fastq",
+        outprefix = "data/reads/deconvolution/{reads}"
+        
+    conda:
+        "../envs/preprocess.yaml"
+
+    shell:
+        " && ".join([
+            "cd {params.outprefix}",
+            "sabre se -m {deconvolution_mismatch} -f {params.reads} -b {params.barcode} -u unknow.fastq > sabre.log"
+        ])

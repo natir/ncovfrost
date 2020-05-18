@@ -1,0 +1,50 @@
+include: "define.snk"
+
+rule generate_assignation:
+    input:
+        human_map = "data/mappings/{dataset}/{barcode}_human.bam",
+        sras_map = "data/mappings/{dataset}/{barcode}_sras.bam",
+
+    output:
+        assignation = "data/mappings/{dataset}/{barcode}.tsv",
+
+    benchmark:
+        "benchmark/mappings_assignation_{dataset}_{barcode}.tsv",
+
+    shell:
+        "python ../scripts/parse_bam.py {input.human_map} {input.sras_map} > {output.assignation}"
+    
+
+rule mapping:
+    input:
+        reads = "data/reads/deconvolution/{dataset}/{barcode}.fastq",
+        bwa_index = "data/references/{reference}.fasta.bwt",
+
+    output:
+        mapping = "data/mappings/{dataset}/{barcode}_{reference}.bam",
+
+    benchmark:
+        "benchmark/mappings_{dataset}_{barcode}_{reference}.tsv"
+
+    conda:
+        "../envs/bwa.yaml"
+        
+    threads: threads_max
+        
+    shell:
+        "bwa mem -t {threads} data/references/{wildcards.reference}.fasta {input.reads} | samtools sort - > {output.mapping}"
+
+        
+rule index:
+    input:
+        reference = "data/references/{reference}.fasta",
+        
+    output:
+        reference = "data/references/{reference}.fasta.bwt",
+
+
+    conda:
+        "../envs/bwa.yaml"
+        
+    shell:
+        "bwa index {input.reference}"

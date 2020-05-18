@@ -1,0 +1,26 @@
+include: "mapping.snk"
+include: "assignation.snk"
+include: "preprocess.snk"
+
+import csv
+from os import scandir, path
+
+def get_input():
+    with scandir("data/barcodes/") as files:
+        for dataset in files:
+            dataset_name, ext = path.splitext(dataset.name)
+            if dataset.is_file() and ext == ".csv":
+                with open(dataset.path) as fh:
+                    reader = csv.reader(fh, delimiter="\t")
+                    for row in reader:
+                        barcode = row[1].split(".")[0]
+                        yield "data/queries/{}/{}_k{}_e{}.tsv".format(dataset_name, barcode, config["kmer_size"], config["match_threshold"])
+
+                        if config["run_mapping"]:
+                            yield "data/mappings/{}/{}.tsv".format(dataset_name, barcode, config["kmer_size"], config["match_threshold"])
+
+
+
+rule all:
+    input:
+        get_input()

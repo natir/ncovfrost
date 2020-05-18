@@ -1,0 +1,42 @@
+include: "define.snk"
+
+rule query:
+    input:
+        reads = "data/reads/deconvolution/{dataset}/{barcode}.fastq",
+        graph = "data/graphs/graph_k{kmer}.gfa",
+        color = "data/graphs/graph_k{kmer}.bfg_colors",
+        
+    output:
+        query = "data/queries/{dataset}/{barcode}_k{kmer}_e{kmer_ratio}.tsv",
+
+    params:
+        outprefix = "data/queries/{dataset}/{barcode}_k{kmer}_e{kmer_ratio}"
+        
+    benchmark:
+        "benchmark/queries_{dataset}_{barcode}_k{kmer}_e{kmer_ratio}.tsv"
+
+    conda:
+        "../envs/bifrost.yaml"
+       
+    threads: threads_max
+             
+    shell:
+        "Bifrost query -t {threads} -e {wildcards.kmer_ratio} -n -g {input.graph} -f {input.color} -q {input.reads} -o {params.outprefix}"
+
+        
+rule build_graph:
+    input:
+        human = "data/references/human.fasta",
+        sras = "data/references/sras.fasta",
+
+    output:
+        graph = "data/graphs/graph_k{kmer}.gfa",
+        color = "data/graphs/graph_k{kmer}.bfg_colors",
+
+    params:
+        outprefix = "data/graphs/graph_k{kmer}"
+        
+    threads: threads_max
+        
+    shell:
+        "Bifrost build -t {threads} -c -k {wildcards.kmer} -r {input.human} -r {input.sras} -o {params.outprefix}"
