@@ -12,7 +12,7 @@ rule generate_assignation:
         "benchmark/mappings_assignation_{dataset}_{barcode}.tsv",
 
     shell:
-        "python ../scripts/parse_bam.py {input.human_map} {input.sras_map} > {output.assignation}"
+        "python ./scripts/parse_bam.py {input.human_map} {input.sras_map} > {output.assignation}"
     
 
 rule mapping:
