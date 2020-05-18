@@ -7,7 +7,7 @@
 
     "kmer_size": 21,
 
-    "match_threshold": 0.6,
+    "match_threshold": 0.5,
 
     "run_mapping": false
 }

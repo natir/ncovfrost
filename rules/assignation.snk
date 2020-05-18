@@ -21,7 +21,7 @@ rule query:
     threads: threads_max
              
     shell:
-        "Bifrost query -t {threads} -e {wildcards.kmer_ratio} -n -g {input.graph} -f {input.color} -q {input.reads} -o {params.outprefix}"
+        "Bifrost query -t {threads} -e {wildcards.kmer_ratio} -g {input.graph} -f {input.color} -q {input.reads} -o {params.outprefix}"
 
         
 rule build_graph:
